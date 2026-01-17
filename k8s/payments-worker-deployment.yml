@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-worker
+  template:
+    metadata:
+      labels:
+        app: payments-worker
+    spec:
+      containers:
+        - name: payments-worker
+          image: techchallengefiaporchestation-payments-worker:latest
+          imagePullPolicy: IfNotPresent

@@ -1,59 +1,4 @@
-version: '3.9'
-
 services:
-  users-api:
-    build:
-      context: ../TechChallengeFIAP.UsersAPI
-      dockerfile: Dockerfile
-    container_name: users-api
-    ports:
-      - "5000:80"
-    environment:
-      # Simulando ConfigMap (variáveis não sensíveis)
-      SOME_SETTING: "valor"
-      # Simulando Secret (variáveis sensíveis)
-      DATABASE_CONNECTION: "Server=db;Database=users;User Id=sa;Password=1234;"
-      RABBITMQ_PASSWORD: "secret"
-    depends_on:
-      - rabbitmq
-
-  catalog-api:
-    build:
-      context: ../TechChallengeFIAP.Catalog.API
-      dockerfile: Dockerfile
-    container_name: catalog-api
-    ports:
-      - "5001:80"
-    environment:
-      SOME_SETTING: "valor"
-      DATABASE_CONNECTION: "Server=db;Database=catalog;User Id=sa;Password=1234;"
-      RABBITMQ_PASSWORD: "secret"
-    depends_on:
-      - rabbitmq
-
-  payments-worker:
-    build:
-      context: ../TechChallengeFIAP.Payments.Worker
-      dockerfile: Dockerfile
-    container_name: payments-worker
-    environment:
-      SOME_SETTING: "valor"
-      DATABASE_CONNECTION: "Server=db;Database=payments;User Id=sa;Password=1234;"
-      RABBITMQ_PASSWORD: "secret"
-    depends_on:
-      - rabbitmq
-
-  notifications-worker:
-    build:
-      context: ../TechChallengeFIAP.Notifications.Worker
-      dockerfile: Dockerfile
-    container_name: notifications-worker
-    environment:
-      SOME_SETTING: "valor"
-      DATABASE_CONNECTION: "Server=db;Database=notifications;User Id=sa;Password=1234;"
-      RABBITMQ_PASSWORD: "secret"
-    depends_on:
-      - rabbitmq
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -64,3 +9,51 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: secret
+
+  users-api:
+    build:
+      context: ../
+      dockerfile: TechChallengeFIAP.UsersAPI/Dockerfile
+    container_name: users-api
+    ports:
+      - "5000:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      RABBITMQ_CONNECTION: amqp://user:secret@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+
+  catalog-api:
+    build:
+      context: ../
+      dockerfile: TechChallengeFIAP.Catalog.API/Dockerfile
+    container_name: catalog-api
+    ports:
+      - "5001:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      RABBITMQ_CONNECTION: amqp://user:secret@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+
+  payments-worker:
+    build:
+      context: ../
+      dockerfile: TechChallengeFIAP.Payments.Worker/Dockerfile
+    container_name: payments-worker
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      RABBITMQ_CONNECTION: amqp://user:secret@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+
+  notifications-worker:
+    build:
+      context: ../
+      dockerfile: TechChallengeFIAP.Notifications.Worker/Dockerfile
+    container_name: notifications-worker
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      RABBITMQ_CONNECTION: amqp://user:secret@rabbitmq:5672
+    depends_on:
+      - rabbitmq

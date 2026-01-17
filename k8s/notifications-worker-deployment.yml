@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications-worker
+  template:
+    metadata:
+      labels:
+        app: notifications-worker
+    spec:
+      containers:
+        - name: notifications-worker
+          image: techchallengefiaporchestation-notifications-worker:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: RABBITMQ_CONNECTION
+              value: amqp://user:secret@rabbitmq:5672
