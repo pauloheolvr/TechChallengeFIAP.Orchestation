@@ -1,5 +1,7 @@
 # TechChallengeFIAP.Orchestation
-Projeto que organiza e execute os serviços usando Docker Compose.
+Este repositório é responsável pela orquestração dos serviços do projeto Tech Challenge FIAP, fornecendo configurações para execução em ambiente local e ambiente orquestrado.
 
 ## Tecnologias usadas
-Docker e Docker Compose
+- Docker
+- Docker Compose
+- Kubernetes
